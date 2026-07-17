@@ -1,7 +1,7 @@
 // ===========================================================
 //  KONFIGURASI & GLOBAL STATE
 // ===========================================================
-const API_BASE = 'https://script.google.com/macros/s/AKfycbwsYSFz_OlVEF0YKEsHL_YE9vlpxWDX5eDh-bNxXg1ZF442p5L6F3ARZNA6ZMaDncQY7g/exec'; // Ganti dengan URL Web App
+const API_BASE = 'https://script.google.com/macros/s/AKfycbz7T9-LKBe3MJzJofTUPIyuiU6_-3Yrbrqv_hP1OmQIyULF2vgcIBIFdfobUHKTY8dKkQ/exec'; // Ganti dengan URL Web App
 const USE_DEMO = !API_BASE || API_BASE.includes('YOUR_GOOGLE');
 
 let currentUser = null;
