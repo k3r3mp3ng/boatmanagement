@@ -1,7 +1,7 @@
 // ===========================================================
 //  KONFIGURASI & GLOBAL STATE
 // ===========================================================
-const API_BASE = 'https://script.google.com/macros/s/AKfycbxjA23kkvXAzB2e-Yt8IZAF-GOVHGr9QfHyBVc1Ft1bi6FrK4Z3yuC7dHOL2QqjQREw/exec'; // Ganti dengan URL Web App
+const API_BASE = 'https://script.google.com/macros/s/AKfycbzqcYeTtOvUIiQAhoBU5RvfvaDWp2WgFQwPUBJH9pqvzWF52f_uATAqFxx6-kgwh6NEMQ/exec'; // Ganti dengan URL Web App
 const USE_DEMO = !API_BASE || API_BASE.includes('YOUR_GOOGLE');
 
 let currentUser = null;
@@ -57,10 +57,11 @@ document.getElementById('modalOverlay').onclick = (e) => { if(e.target===e.curre
 async function apiCall(action, data = {}) {
     if (USE_DEMO) return demoApi(action, data);
     try {
-        // Gunakan URLSearchParams untuk form-urlencoded (tidak memicu preflight)
+        // Gunakan URLSearchParams untuk mencegah browser mengirim request OPTIONS (preflight)
         const params = new URLSearchParams();
         params.append('action', action);
         for (let key in data) {
+            // Jika ada nested object, kita stringify dulu
             if (typeof data[key] === 'object') {
                 params.append(key, JSON.stringify(data[key]));
             } else {
@@ -70,8 +71,7 @@ async function apiCall(action, data = {}) {
 
         const resp = await fetch(API_BASE, {
             method: 'POST',
-            // JANGAN set header 'Content-Type': 'application/json'
-            // Browser otomatis set 'application/x-www-form-urlencoded'
+            // JANGAN ADA HEADER 'Content-Type' apapun! Browser akan otomatis set 'application/x-www-form-urlencoded'
             body: params
         });
 
