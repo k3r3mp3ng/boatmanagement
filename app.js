@@ -1,7 +1,7 @@
 // ===========================================================
 //  KONFIGURASI & GLOBAL STATE
 // ===========================================================
-const API_BASE = 'https://script.google.com/macros/s/AKfycbzdSTsQb7T1-I5X-BqRJK9BPcWFouPYMp4-2rvs0NuQqPMrxAi_DELzd7IBdBTSfaOQyw/exec'; // Ganti dengan URL Web App
+const API_BASE = 'https://corsproxy.io/?' + 'https://script.google.com/macros/s/AKfycbzdSTsQb7T1-I5X-BqRJK9BPcWFouPYMp4-2rvs0NuQqPMrxAi_DELzd7IBdBTSfaOQyw/exec'; // Ganti dengan URL Web App
 const USE_DEMO = !API_BASE || API_BASE.includes('YOUR_GOOGLE');
 
 let currentUser = null;
