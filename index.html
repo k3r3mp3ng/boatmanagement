@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5" />
+    <title>BoatManager Pro</title>
+    <!-- CSS Terpisah -->
+    <link rel="stylesheet" href="style.css" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <!-- Library PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</head>
+<body>
+    <!-- Login -->
+    <div id="loginScreen">
+        <div class="login-card">
+            <div class="logo"><i class="fas fa-ship"></i><h1>BoatManager</h1><p>Sistem Nelayan & Trip</p></div>
+            <div id="loginError" class="error-msg">Kredensial salah</div>
+            <form id="loginForm">
+                <div class="form-group"><label>Username</label><input type="text" id="loginUser" value="owner" /></div>
+                <div class="form-group"><label>Password</label><input type="password" id="loginPass" value="123456" /></div>
+                <button type="submit" class="login-btn"><i class="fas fa-arrow-right-to-bracket"></i> Masuk</button>
+            </form>
+            <div class="login-footer">
+                <span>owner</span> / 123456 &bull; <span>admin</span> / 123456 &bull; <span>visitor</span> / 123456
+            </div>
+        </div>
+    </div>
+
+    <!-- App Utama -->
+    <div id="app">
+        <!-- Sidebar (Bottom Nav di HP) -->
+        <aside class="sidebar">
+            <div class="sidebar-brand"><i class="fas fa-ship"></i><div><h2>BoatManager</h2><small>pro</small></div></div>
+            <nav class="sidebar-nav">
+                <div class="nav-item active" data-page="dashboard"><i class="fas fa-chart-pie"></i><span>Dashboard</span></div>
+                <div class="nav-item" data-page="boats"><i class="fas fa-sailboat"></i><span>Kapal</span></div>
+                <div class="nav-item" data-page="trips"><i class="fas fa-calendar-days"></i><span>Trip</span></div>
+                <div class="nav-item" data-page="transactions"><i class="fas fa-coins"></i><span>Transaksi</span></div>
+                <div class="nav-item" data-page="catch"><i class="fas fa-fish"></i><span>Hasil Tangkapan</span></div>
+                <div class="nav-item" data-page="reports"><i class="fas fa-chart-bar"></i><span>Laporan & PDF</span></div>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="user-info"><div class="avatar" id="userAvatar">O</div><div class="details"><div class="name" id="userName">Owner</div><div class="role" id="userRole">owner</div></div></div>
+                <button class="logout-btn" id="logoutBtn"><i class="fas fa-right-from-bracket"></i><span>Keluar</span></button>
+            </div>
+        </aside>
+
+        <div class="main-content">
+            <header class="main-header"><h3 id="pageTitle">Dashboard</h3><span class="badge-role" id="roleBadge">Owner</span></header>
+            <div class="main-body">
+                <!-- Dashboard -->
+                <section id="page-dashboard" class="page-section active">
+                    <div class="stats-grid" id="dashboardStats">
+                        <div class="stat-card"><div class="stat-label">Total Kapal</div><div class="stat-value" id="statBoats">0</div></div>
+                        <div class="stat-card"><div class="stat-label">Trip Aktif</div><div class="stat-value" id="statTrips">0</div></div>
+                        <div class="stat-card"><div class="stat-label">Omset (Kotor)</div><div class="stat-value" id="statIncome">Rp 0</div></div>
+                        <div class="stat-card"><div class="stat-label">Biaya Operasional</div><div class="stat-value" id="statExpense">Rp 0</div></div>
+                        <div class="stat-card"><div class="stat-label">Total Modal per Boat</div><div class="stat-value" id="statCapital">Rp 0</div></div>
+                        <div class="stat-card"><div class="stat-label">Profit Bersih</div><div class="stat-value" id="statProfit">Rp 0</div></div>
+                    </div>
+                    <div class="table-container"><h4>Trip Terbaru</h4><div id="recentTripsList"><div class="empty-state">Belum ada trip</div></div></div>
+                </section>
+
+                <!-- Kapal -->
+                <section id="page-boats" class="page-section">
+                    <div class="table-container">
+                        <div class="table-header"><h4>Kapal & Modal</h4><div class="actions"><button class="btn-primary" id="addBoatBtn"><i class="fas fa-plus"></i> Tambah</button></div></div>
+                        <div class="table-scroll"><div id="boatsTableWrap"><div class="empty-state">Memuat...</div></div></div>
+                    </div>
+                </section>
+
+                <!-- Trip -->
+                <section id="page-trips" class="page-section">
+                    <div class="table-container">
+                        <div class="table-header"><h4>Trip (Otomatis 1 Bulan)</h4><div class="actions"><button class="btn-primary" id="addTripBtn"><i class="fas fa-plus"></i> Trip Baru</button></div></div>
+                        <div class="table-scroll"><div id="tripsTableWrap"><div class="empty-state">Memuat...</div></div></div>
+                    </div>
+                </section>
+
+                <!-- Transaksi -->
+                <section id="page-transactions" class="page-section">
+                    <div class="table-container">
+                        <div class="table-header"><h4>Transaksi Keuangan</h4><div class="actions"><button class="btn-primary" id="addTxnBtn"><i class="fas fa-plus"></i> Tambah</button></div></div>
+                        <div class="table-scroll"><div id="txnsTableWrap"><div class="empty-state">Memuat...</div></div></div>
+                    </div>
+                </section>
+
+                <!-- Hasil Tangkapan -->
+                <section id="page-catch" class="page-section">
+                    <div class="table-container">
+                        <div class="table-header"><h4>Hasil Tangkapan & Harga per Kg</h4><div class="actions"><button class="btn-primary" id="addCatchBtn"><i class="fas fa-plus"></i> Input Hasil</button></div></div>
+                        <div class="table-scroll"><div id="catchTableWrap"><div class="empty-state">Memuat...</div></div></div>
+                    </div>
+                </section>
+
+                <!-- Laporan & PDF -->
+                <section id="page-reports" class="page-section">
+                    <div class="table-container" style="padding:20px;">
+                        <h4>Laporan Bulanan (PDF)</h4>
+                        <div class="form-row" style="grid-template-columns:1fr 1fr 1fr;margin-bottom:20px;">
+                            <div><label>Bulan</label><input type="month" id="reportMonth" /></div>
+                            <div><label>Kapal</label><select id="reportBoat"><option value="all">Semua Kapal</option></select></div>
+                            <div><button class="btn-primary" id="downloadPdfBtn"><i class="fas fa-file-pdf"></i> Download PDF</button></div>
+                        </div>
+                        <div id="reportSummary" class="stats-grid" style="grid-template-columns:1fr 1fr 1fr 1fr;">
+                            <div class="stat-card"><div class="stat-label">Total Tangkapan</div><div class="stat-value" id="repCatch">0 Kg</div></div>
+                            <div class="stat-card"><div class="stat-label">Omset Kotor</div><div class="stat-value" id="repIncome">Rp 0</div></div>
+                            <div class="stat-card"><div class="stat-label">Biaya Operasional</div><div class="stat-value" id="repExpense">Rp 0</div></div>
+                            <div class="stat-card"><div class="stat-label">Profit Bersih</div><div class="stat-value" id="repProfit">Rp 0</div></div>
+                        </div>
+                        <div id="reportDetail"><div class="empty-state">Pilih bulan & kapal, lalu klik Download PDF</div></div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Overlay -->
+    <div class="modal-overlay" id="modalOverlay"><div class="modal" id="modalContent"><div class="modal-header"><h3 id="modalTitle">Form</h3><button class="close-modal" id="closeModal"><i class="fas fa-xmark"></i></button></div><div id="modalBody"></div></div></div>
+    <div id="toastContainer"></div>
+
+    <!-- JS Terpisah -->
+    <script src="app.js"></script>
+</body>
+</html>
