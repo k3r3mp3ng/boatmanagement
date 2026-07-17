@@ -55,34 +55,22 @@ document.getElementById('modalOverlay').onclick = (e) => { if(e.target===e.curre
 //  API CALL (Google Sheets / Demo)
 // ===========================================================
 async function apiCall(action, data = {}) {
-    if (USE_DEMO) return demoApi(action, data);
-    try {
-        // Ganti JSON ke URLSearchParams (application/x-www-form-urlencoded)
-        const params = new URLSearchParams();
-        params.append('action', action);
-        for (let key in data) {
-            // Jika ada nested object, kita stringify agar bisa dikirim
-            if (typeof data[key] === 'object') {
-                params.append(key, JSON.stringify(data[key]));
-            } else {
-                params.append(key, data[key]);
-            }
-        }
+  if (USE_DEMO) return demoApi(action, data);
+  try {
+    // Kirim sebagai JSON, karena Apps Script sekarang bisa membaca JSON maupun form
+    const resp = await fetch(API_BASE, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action, ...data })
+    });
 
-        const resp = await fetch(API_BASE, {
-            method: 'POST',
-            // JANGAN set header 'Content-Type': 'application/json'
-            // Browser akan otomatis set 'application/x-www-form-urlencoded'
-            body: params 
-        });
-
-        const json = await resp.json();
-        if (!json.success) throw new Error(json.message);
-        return json.data;
-    } catch(err) {
-        showToast('Error: ' + err.message, 'error');
-        return null;
-    }
+    const json = await resp.json();
+    if (!json.success) throw new Error(json.message);
+    return json.data;
+  } catch (err) {
+    showToast('Error: ' + err.message, 'error');
+    return null;
+  }
 }
 
 // Demo Data (untuk testing tanpa API)
